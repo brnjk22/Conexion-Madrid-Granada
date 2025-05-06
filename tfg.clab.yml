@@ -1,0 +1,80 @@
+name: TFG
+topology:
+  nodes:
+    Corp:
+      kind: linux
+      image: alpine:latest
+    It-users: 
+      kind: linux
+      image: alpine:latest
+      #IP POR DHCP
+    Impresora:
+      kind: linux
+      image: alpine:latest
+    SRI:
+      kind: linux
+      image: alpine:latest
+    WEB:
+      kind: linux
+      image: alpine:latest
+    Leaf-Cobre:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      type: L2
+    Leaf-Fibra:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      type: L2
+    SPINE-1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      type: L2
+    SPINE-2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      type: L2
+    BoarderLeaf-1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      type: L2
+    BoarderLeaf-2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      type: L2
+    R1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:1.0.0
+    R2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:1.0.0
+    Internet:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:1.0.0
+      type: L2
+    
+  links:
+    #Conexiones de los hosts al Leaf-Cobre
+    - endpoints: ["Corp:e0/1","Leaf-Cobre:e0/1"]
+    - endpoints: ["It-users:e0/1","Leaf-Cobre:e0/2"]
+    - endpoints: ["Impresora:e0/1","Leaf-Cobre:e0/3"]
+    #Conexiones de los servidores al Leaf-Fibra
+    - endpoints: ["SRI:e0/1","Leaf-Fibra:e0/1"]
+    - endpoints: ["WEB:e0/1","Leaf-Fibra:e0/2"]
+    #Conexion del Leaf-Cobre y Leaf-Fibra a los Spine
+    - endpoints: ["Leaf-Cobre:e1/0","SPINE-1:e0/1"]
+    - endpoints: ["Leaf-Cobre:e1/1","SPINE-2:e0/1"]
+    - endpoints: ["Leaf-Fibra:e1/0","SPINE-1:e0/2"]
+    - endpoints: ["Leaf-Fibra:e1/1","SPINE-2:e0/2"]
+    #Conexion de los Spine a los BoarderLeaf
+    - endpoints: ["SPINE-1:e1/0","BoarderLeaf-1:e0/1"]
+    - endpoints: ["SPINE-1:e1/1","BoarderLeaf-2:e0/1"]
+    - endpoints: ["SPINE-2:e1/0","BoarderLeaf-1:e0/2"]
+    - endpoints: ["SPINE-2:e1/1","BoarderLeaf-2:e0/2"]
+    #Conexion de los BoarderLeaf a los routers
+    - endpoints: ["BoarderLeaf-1:e1/0","R1:e0/1"]
+    - endpoints: ["BoarderLeaf-1:e1/1","R2:e0/1"]
+    - endpoints: ["BoarderLeaf-2:e1/0","R2:e0/2"]
+    - endpoints: ["BoarderLeaf-2:e1/1","R1:e0/2"]
+    #Conexion de los routers a Internet
+    - endpoints: ["R1:e0/3","Internet:e0/1"]
+    - endpoints: ["R2:e0/3","Internet:e0/2"]
