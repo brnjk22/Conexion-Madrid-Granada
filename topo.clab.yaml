@@ -5,14 +5,12 @@ topology:
     # Spine Switches
     s1:
       kind: cisco_iol
-      image: vrnetlab/cisco_iol:L2-1.0.0
+      image: vrnetlab/cisco_iol:1.0.0
       startup-config: configs/s1.cfg.partial
-      type: l2
     s2:
       kind: cisco_iol
-      image: vrnetlab/cisco_iol:L2-1.0.0
+      image: vrnetlab/cisco_iol:1.0.0
       startup-config: configs/s2.cfg.partial
-      type: l2
 
     # Leaf Switches
     l1:
@@ -104,8 +102,10 @@ topology:
 
     # Firewall conectado a L2 (lado interno)
     # Firewall conectado a R3 (lado externo)
+    # Firewall conectado a L1 (lado interno)
     - endpoints: ["fw:eth1", "l2:e1/0"]
     - endpoints: ["fw:eth2", "r3:e0/1"]
+    - endpoints: ["fw:eth3", "l1:e1/0"]
 
     # L3 conectado a WEB y SRI (VLAN 20)
     - endpoints: ["l3:e0/3", "host_web:eth0"]
