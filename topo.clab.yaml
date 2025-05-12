@@ -1,0 +1,125 @@
+name: laliga-leafspine
+
+topology:
+  nodes:
+    # Spine Switches
+    s1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:1.0.0
+      startup-config: configs/s1.cfg.partial
+    s2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:1.0.0
+      startup-config: configs/s2.cfg.partial
+
+    # Leaf Switches
+    l1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      startup-config: configs/l1.cfg.partial
+      type: l2
+    l2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      startup-config: configs/l2.cfg.partial
+      type: l2
+    l3:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      startup-config: configs/l3.cfg.partial
+      type: l2
+    l4:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      startup-config: configs/l4.cfg.partial
+      type: l2
+    l5:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-1.0.0
+      startup-config: configs/l5.cfg.partial
+      type: l2
+
+    # Routers internos y externos
+    r1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:1.0.0
+      startup-config: configs/r1.cfg.partial
+    r2:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:1.0.0
+      startup-config: configs/r2.cfg.partial
+    r3:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:1.0.0
+      startup-config: configs/r3.cfg.partial
+
+    # Firewall (Linux o personalizado)
+    fw:
+      kind: fortinet_fortigate
+      image: vrnetlab/vr-fortios:fortios
+
+    #Hosts
+    host_web:
+      kind: linux
+      image: alpine:latest
+      network-mode: none
+    host_sri:
+      kind: linux
+      image: alpine:latest
+      network-mode: none
+    host_corp:
+      kind: linux
+      image: alpine:latest
+      network-mode: none
+    host_printer:
+      kind: linux
+      image: alpine:latest
+      network-mode: none
+    host_it:
+      kind: linux
+      image: alpine:latest
+      network-mode: none
+
+  links:
+    # Spine a los leaf
+    - endpoints: ["s1:e0/1", "l1:e0/1"]
+    - endpoints: ["s1:e0/2", "l2:e0/1"]
+    - endpoints: ["s1:e0/3", "l3:e0/1"]
+    - endpoints: ["s1:e1/0", "l4:e0/1"]
+    - endpoints: ["s1:e1/1", "l5:e0/1"]
+
+    - endpoints: ["s2:e0/1", "l1:e0/2"]
+    - endpoints: ["s2:e0/2", "l2:e0/2"]
+    - endpoints: ["s2:e0/3", "l3:e0/2"]
+    - endpoints: ["s2:e1/0", "l4:e0/2"]
+    - endpoints: ["s2:e1/1", "l5:e0/2"]
+
+    # R1 conectado a L1
+    - endpoints: ["r1:e0/1", "l1:e0/3"]
+    # R1 conectado a L2
+    - endpoints: ["r1:e0/2", "l2:e0/3"]
+
+    # R2 conectado a L1
+    - endpoints: ["r2:e0/1", "l1:e1/0"]
+    # R2 conectado a L2
+    - endpoints: ["r2:e0/2", "l2:e1/0"]
+
+    # Firewall conectado a L2 (lado interno)
+    # Firewall conectado a R3 (lado externo)
+    # Firewall conectado a L1 (lado interno)
+    - endpoints: ["fw:eth1", "l2:e1/1"]
+    - endpoints: ["fw:eth2", "r3:e0/1"]
+    - endpoints: ["fw:eth3", "l1:e1/1"]
+
+    # L3 conectado a WEB y SRI (VLAN 20)
+    - endpoints: ["l3:e0/3", "host_web:eth0"]
+    - endpoints: ["l3:e1/0", "host_sri:eth0"]
+
+    # L4 conectado a CORP (VLAN 30)
+    - endpoints: ["l4:e0/3", "host_corp:eth0"]
+    # L4 conectado a PRINTER (VLAN 40)
+    - endpoints: ["l4:e1/0", "host_printer:eth1"]
+
+    # L5 conectado a PRINTER (VLAN 40) y IT-USERS (VLAN 50)
+    - endpoints: ["l5:e0/3", "host_printer:eth0"]
+    - endpoints: ["l5:e1/0", "host_it:eth0"]
