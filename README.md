@@ -15,7 +15,7 @@ La propuesta contempla la creación de una red eficiente, escalable y segmentada
 - Asegurar una gestión sencilla del entorno por parte de nuestros equipos técnicos.
 
 
->"La estructura que proponemos se basa en un modelo de red moderno que combina conectividad eficiente entre puestos de trabajo, servidores internos, impresoras, y salida controlada a Internet, todo ello bajo medidas de protección adecuadas.
+>LaLiga: "La estructura que proponemos se basa en un modelo de red moderno que combina conectividad eficiente entre puestos de trabajo, servidores internos, impresoras, y salida controlada a Internet, todo ello bajo medidas de protección adecuadas.
 Solicitamos que se nos presente una propuesta de ejecución, incluyendo plazos estimados, fases de implementación y recursos necesarios. La implantación de esta red es clave para avanzar en uno de los proyectos estratégicos del presente año."
 
 ## 2. Planificacion del Proyecto
