@@ -6,11 +6,11 @@ topology:
     s1:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      #startup-config: Configs/Switches/Spine1.txt.partial
+      startup-config: Configs/Switches/Spine1.txt.partial
     s2:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      #startup-config: Configs/Switches/Spine2.txt.partial
+      startup-config: Configs/Switches/Spine2.txt.partial
 
     # Leaf Switches
     l1:
