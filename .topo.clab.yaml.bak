@@ -6,11 +6,12 @@ topology:
     s1:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      startup-config: Configs/Switches/Spine1.txt.partial
+      #startup-config: Configs/Switches/Spine1.txt.partial
     s2:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      startup-config: Configs/Switches/Spine2.txt.partial
+      #startup-config: Configs/Switches/Spine2.txt.partial
+
     # Leaf Switches
     l1:
       kind: cisco_iol
@@ -42,48 +43,42 @@ topology:
     r1:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      startup-config: Configs/Routers/r1.txt.partial
+      #startup-config: configs/r1.txt.partial
     r2:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      startup-config: Configs/Routers/r2.txt.partial
+      #startup-config: configs/r2.txt.partial
     r3:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      startup-config: Configs/Routers/r3.txt.partial
+      #startup-config: configs/r3.txt.partial
 
     # Firewall (Linux o personalizado)
     fw:
       kind: fortinet_fortigate
       image: vrnetlab/vr-fortios:fortios
-      startup-config: Configs/Firewall/fw.txt.partial
 
     #Hosts
     host_web:
       kind: linux
-      image: ubuntu:latest
+      image: alpine:latest
       network-mode: none
-      startup-config: Configs/Hosts/host_web.txt.partial
     host_sri:
       kind: linux
-      image: ubuntu:latest
+      image: alpine:latest
       network-mode: none
-      startup-config: Configs/Hosts/host_sri.txt.partial
     host_corp:
       kind: linux
-      image: ubuntu:latest
+      image: alpine:latest
       network-mode: none
-      startup-config: Configs/Hosts/host_corp.txt.partial
     host_printer:
       kind: linux
-      image: ubuntu:latest
+      image: alpine:latest
       network-mode: none
-      startup-config: Configs/Hosts/host_printer.txt.partial
     host_it:
       kind: linux
-      image: ubuntu:latest
+      image: alpine:latest
       network-mode: none
-      startup-config: Configs/Hosts/host_it.txt.partial
 
   links:
     # Spine a los leaf
