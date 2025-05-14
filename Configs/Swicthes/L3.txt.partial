@@ -1,0 +1,53 @@
+##Asignacion del nomre del dispositivo
+hostname L3
+!
+##Creacion de las VLANs y VTP
+vtp domain VTP-LaLiga
+vtp mode client
+vtp password LaLiga
+!
+vlan 10
+ name "Gestion"
+vlan 20
+ name "Servers"
+vlan 30
+ name "Corp_Users"
+vlan 40
+ name "Impresoras"
+vlan 50
+ name "IT-Users"
+vlan 60
+ name "MGMT"
+!
+##Asignacion de las interfaces a las VLANs
+##Conexion a Spine1
+interface e0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,50,60
+ no shutdown
+!
+##Conexion a Spine2
+interface e0/2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,50,60
+ no shutdown
+! 
+##Conexion a WEB
+interface e0/3
+ switchport mode access
+ switchport access vlan 20
+ no shutdown
+!
+##Conexion a SRI
+interface e1/0
+ switchport mode access
+ switchport access vlan 20
+ no shutdown
+!
+##Asignacion de la interfaz de gestion (vlan 10)
+interface vlan 10
+ ip address 192.168.10.60 255.255.255.0
+ no shutdown
+!
