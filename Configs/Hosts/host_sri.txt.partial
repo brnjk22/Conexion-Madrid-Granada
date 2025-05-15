@@ -1,0 +1,78 @@
+auto eth0
+iface eth0 inet static
+    address 192.168.20.80
+    netmask 255.255.255.0
+    gateway 192.168.10.3
+
+# Actualizar repositorios e instalar servicios necesarios
+sudo apt update
+sudo apt install -y isc-dhcp-server bind9 
+
+# Configuración del servidor DHCP
+cat <<EOT | sudo tee /etc/dhcp/dhcpd.conf
+default-lease-time 600;
+max-lease-time 7200;
+authoritative;
+
+# Configuración de subred para VLAN 30
+subnet 192.168.30.0 netmask 255.255.255.0 {
+    range 192.168.30.100 192.168.30.200;
+    option routers 192.168.30.1;
+    option domain-name-servers 192.168.20.80;
+    option domain-name "lab.local";
+}
+
+# Configuración de subred para VLAN 40
+subnet 192.168.40.0 netmask 255.255.255.0 {
+    range 192.168.40.100 192.168.40.200;
+    option routers 192.168.40.1;
+    option domain-name-servers 192.168.20.80;
+    option domain-name "lab.local";
+}
+
+# Configuración de subred para VLAN 50
+subnet 192.168.50.0 netmask 255.255.255.0 {
+    range 192.168.50.100 192.168.50.200;
+    option routers 192.168.50.1;
+    option domain-name-servers 192.168.20.80;
+    option domain-name "lab.local";
+}
+EOT
+
+sudo systemctl restart isc-dhcp-server
+
+# Configuración del servidor DNS
+cat <<EOT | sudo tee /etc/bind/named.conf.local
+zone "lab.local" {
+    type master;
+    file "/etc/bind/db.lab.local";
+};
+
+zone "20.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.192.168.20";
+};
+EOT
+
+cat <<EOT | sudo tee /etc/bind/db.lab.local
+\$TTL 604800
+@   IN  SOA ns.lab.local. admin.lab.local. (
+        2025051401 ; Serial
+        604800     ; Refresh
+        86400      ; Retry
+        2419200    ; Expire
+        604800 )   ; Negative Cache TTL
+
+; Nameservers
+@   IN  NS  ns.lab.local.
+
+; Wildcard redirection
+*   IN  A   192.168.20.80
+
+; Specific records
+ns  IN  A   192.168.20.80
+EOT
+
+sudo systemctl restart bind9
+
+

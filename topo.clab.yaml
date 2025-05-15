@@ -43,21 +43,24 @@ topology:
     r1:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      startup-config: Configs/Routers/r1.txt.partial
+      startup-config: Configs/Routers/R1.txt.partial
     r2:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      startup-config: Configs/Routers/r2.txt.partial
+      startup-config: Configs/Routers/R2.txt.partial
     r3:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      startup-config: Configs/Routers/r3.txt.partial
+      startup-config: Configs/Routers/R3.txt.partial
 
     # Firewall (Linux o personalizado)
     fw:
       kind: fortinet_fortigate
       image: vrnetlab/vr-fortios:fortios
       startup-config: Configs/Firewall/fw.txt.partial
+      ports:
+        - "8080:80"
+        - "8443:443"
 
     #Hosts
     host_web:
