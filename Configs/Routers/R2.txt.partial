@@ -52,5 +52,8 @@ interface e0/1.60
 !
 ip routing
 
-# Configuración de rutas estáticas
-ip route 0.0.0.0 0.0.0.0 192.168.X.10  # Dirección IP del siguiente salto (Firewall)
+interface e0/1
+ ip nat inside
+interface e0/2
+ ip nat inside
+ 

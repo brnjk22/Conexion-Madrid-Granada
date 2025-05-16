@@ -51,3 +51,9 @@ interface e0/1.60
  standby 60 preempt
 !
 ip routing
+
+ip nat inside
+interface e0/1
+ ip nat inside
+interface e0/2
+ ip nat inside
