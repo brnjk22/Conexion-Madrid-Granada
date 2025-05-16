@@ -2,22 +2,22 @@
 hostname L4
 !
 ##Creacion de las VLANs y VTP
-vtp domain VTP-LaLiga
-vtp mode client
-vtp password LaLiga
+#vtp domain VTP-LaLiga
+#vtp mode client
+#vtp password LaLiga
 !
 vlan 10
- name "Gestion"
+ name Gestion
 vlan 20
- name "Servers"
+ name Servers
 vlan 30
- name "Corp_Users"
+ name Corp_Users
 vlan 40
- name "Impresoras"
+ name Impresoras
 vlan 50
- name "IT-Users"
+ name IT-Users
 vlan 60
- name "MGMT"
+ name MGMT
 !
 ##Asignacion de las interfaces a las VLANs
 ##Conexion a Spine1
