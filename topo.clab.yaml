@@ -152,7 +152,7 @@ topology:
     - endpoints: ["l4:e1/0", "host_printer:e1"]
 
     # L5 conectado a PRINTER (VLAN 40) y IT-USERS (VLAN 50)
-    - endpoints: ["l5:e0/3", "host_printer:eth0"]
+    - endpoints: ["l5:e0/3", "host_printer:e0"]
     - endpoints: ["l5:e1/0", "host_it:e0"]
     # R3 conectado a Internet
     - endpoints: ["r3:e0/2", "internet:e0"]
