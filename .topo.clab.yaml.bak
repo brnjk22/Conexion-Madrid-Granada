@@ -1,7 +1,7 @@
 name: laliga-leafspine
 mgmt:
   network: eth0
-  ipv4-subnet: 20.0.0.0/28
+  ipv4-subnet: 20.0.0.0/24
 topology:
   nodes:
     # Spine Switches
@@ -69,43 +69,64 @@ topology:
       kind: linux
       image: ubuntu:latest
       exec:
+        - "apt update"
+        - "apt install -y iproute2"
         - "ip addr add 192.168.20.50/24 dev e0"
         - "ip route add default via 203.0.113.1"
+      
       startup-config: Configs/Hosts/host_web.txt.partial
     host_sri:
       kind: linux
       image: ubuntu:latest
       exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "ip link set dev e0 up"
         - "ip addr add 192.168.20.80/24 dev e0"
         - "ip route add default via 203.0.113.1"
-
+  
       startup-config: Configs/Hosts/host_sri.txt.partial
     host_corp:
       kind: linux
       image: ubuntu:latest
       exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "ip link set dev e0 up"
         - "ip addr add 192.168.30.60/24 dev e0"
         - "ip route add default via 203.0.113.1"
+      
       startup-config: Configs/Hosts/host_corp.txt.partial
     host_printer:
       kind: linux
       image: ubuntu:latest
       exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "ip link set dev e0 up"
         - "ip addr add 192.168.40.10/24 dev e0"
         - "ip route add default via 203.0.113.1"
+      
       startup-config: Configs/Hosts/host_printer.txt.partial
     host_it:
       kind: linux
       image: ubuntu:latest
       exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "ip link set dev e0 up"
         - "ip addr add 192.168.50.10/24 dev e0"
         ##Conexion a internet
         - "ip route add default via 203.0.113.1"
+      
       startup-config: Configs/Hosts/host_it.txt.partial
     internet:
       kind: linux
       image: ubuntu:latest
       exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "ip link set dev e0 up"
         - "ip addr add 203.0.113.1/24 dev e0"
         - "ip route add default via 203.0.113.254"
       startup-config: Configs/Hosts/internet.txt.partial
