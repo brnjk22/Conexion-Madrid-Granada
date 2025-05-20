@@ -69,56 +69,46 @@ topology:
       kind: linux
       image: ubuntu:latest
       exec:
-        - "ip addr add 192.168.20.50/24 dev eth0"
-        - "apt-get update"
-        - "apt-get install -y apache2"
+        - "ip addr add 192.168.20.50/24 dev e0"
         - "ip route add default via 203.0.113.1"
-      network-mode: none
       startup-config: Configs/Hosts/host_web.txt.partial
     host_sri:
       kind: linux
       image: ubuntu:latest
       exec:
-        - "ip addr add 192.168.20.80/24 dev eth0"
-        - "apt-get update"
-        - "apt-get install -y bind9 isc-dhcp-server"
+        - "ip addr add 192.168.20.80/24 dev e0"
         - "ip route add default via 203.0.113.1"
 
-      network-mode: none
       startup-config: Configs/Hosts/host_sri.txt.partial
     host_corp:
       kind: linux
       image: ubuntu:latest
       exec:
-        - "ip addr add 192.168.30.60/24 dev eth0"
+        - "ip addr add 192.168.30.60/24 dev e0"
         - "ip route add default via 203.0.113.1"
-      network-mode: none
       startup-config: Configs/Hosts/host_corp.txt.partial
     host_printer:
       kind: linux
       image: ubuntu:latest
       exec:
-        - "ip addr add 192.168.40.10/24 dev eth0"
+        - "ip addr add 192.168.40.10/24 dev e0"
         - "ip route add default via 203.0.113.1"
-      network-mode: none
       startup-config: Configs/Hosts/host_printer.txt.partial
     host_it:
       kind: linux
       image: ubuntu:latest
       exec:
-        - "ip addr add 192.168.50.10/24 dev eth0"
+        - "ip addr add 192.168.50.10/24 dev e0"
         ##Conexion a internet
         - "ip route add default via 203.0.113.1"
-      network-mode: none
       startup-config: Configs/Hosts/host_it.txt.partial
     internet:
       kind: linux
       image: ubuntu:latest
       exec:
-        - "ip addr add 203.0.113.1/24 dev eth0"
+        - "ip addr add 203.0.113.1/24 dev e0"
         - "ip route add default via 203.0.113.254"
-      network-mode: none
-      #startup-config: Configs/Hosts/internet.txt.partial
+      startup-config: Configs/Hosts/internet.txt.partial
 
 
   links:
@@ -153,16 +143,16 @@ topology:
     - endpoints: ["fw:eth3", "l1:e1/1"]
 
     # L3 conectado a WEB y SRI (VLAN 20)
-    - endpoints: ["l3:e0/3", "host_web:eth0"]
-    - endpoints: ["l3:e1/0", "host_sri:eth0"]
+    - endpoints: ["l3:e0/3", "host_web:e0"]
+    - endpoints: ["l3:e1/0", "host_sri:e0"]
 
     # L4 conectado a CORP (VLAN 30)
-    - endpoints: ["l4:e0/3", "host_corp:eth0"]
+    - endpoints: ["l4:e0/3", "host_corp:e0"]
     # L4 conectado a PRINTER (VLAN 40)
-    - endpoints: ["l4:e1/0", "host_printer:eth1"]
+    - endpoints: ["l4:e1/0", "host_printer:e1"]
 
     # L5 conectado a PRINTER (VLAN 40) y IT-USERS (VLAN 50)
     - endpoints: ["l5:e0/3", "host_printer:eth0"]
-    - endpoints: ["l5:e1/0", "host_it:eth0"]
+    - endpoints: ["l5:e1/0", "host_it:e0"]
     # R3 conectado a Internet
-    - endpoints: ["r3:e0/2", "internet:eth0"]
+    - endpoints: ["r3:e0/2", "internet:e0"]
