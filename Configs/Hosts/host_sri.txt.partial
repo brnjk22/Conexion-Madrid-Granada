@@ -1,11 +1,11 @@
 
 
 # Actualizar repositorios e instalar servicios necesarios
-sudo apt update
-sudo apt install -y isc-dhcp-server bind9 
+ apt update
+ apt install -y isc-dhcp-server bind9 
 
 # Configuración del servidor DHCP
-cat <<EOT | sudo tee /etc/dhcp/dhcpd.conf
+cat <<EOT |  tee /etc/dhcp/dhcpd.conf
 default-lease-time 600;
 max-lease-time 7200;
 authoritative;
@@ -35,10 +35,10 @@ subnet 192.168.50.0 netmask 255.255.255.0 {
 }
 EOT
 
-sudo systemctl restart isc-dhcp-server
+ systemctl restart isc-dhcp-server
 
 # Configuración del servidor DNS
-cat <<EOT | sudo tee /etc/bind/named.conf.local
+cat <<EOT |  tee /etc/bind/named.conf.local
 zone "lab.local" {
     type master;
     file "/etc/bind/db.lab.local";
@@ -50,7 +50,7 @@ zone "20.168.192.in-addr.arpa" {
 };
 EOT
 
-cat <<EOT | sudo tee /etc/bind/db.lab.local
+cat <<EOT |  tee /etc/bind/db.lab.local
 \$TTL 604800
 @   IN  SOA ns.lab.local. admin.lab.local. (
         2025051401 ; Serial
@@ -72,6 +72,6 @@ ituser      IN  A   192.168.20.50
 corp        IN  A   192.168.20.50
 EOT
 
-sudo systemctl restart bind9
+ systemctl restart bind9
 
 

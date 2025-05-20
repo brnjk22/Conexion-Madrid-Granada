@@ -1,10 +1,13 @@
+#!/bin/bash
 
+# Actualizar lista de paquetes e instalar Apache2
+apt update && apt install -y apache2
 
-apt update &&  apt install -y apache2
-    # Configuración del servidor web
+# Crear directorios para los sitios virtuales
 mkdir -p /var/www/corp.lab.local /var/www/ituser.lab.local /var/www/impresoras.lab.local /var/www/www.lab.local
 
-cat <<EOT |  tee /etc/apache2/sites-available/corp.lab.local.conf
+# Configurar archivo de VirtualHost para corp.lab.local
+cat <<EOT > /etc/apache2/sites-available/corp.lab.local.conf
 <VirtualHost *:80>
     ServerName corp.lab.local
     DocumentRoot /var/www/corp.lab.local
@@ -15,7 +18,8 @@ cat <<EOT |  tee /etc/apache2/sites-available/corp.lab.local.conf
 </VirtualHost>
 EOT
 
-cat <<EOT |  tee /etc/apache2/sites-available/ituser.lab.local.conf
+# Configurar archivo de VirtualHost para ituser.lab.local
+cat <<EOT > /etc/apache2/sites-available/ituser.lab.local.conf
 <VirtualHost *:80>
     ServerName ituser.lab.local
     DocumentRoot /var/www/ituser.lab.local
@@ -26,7 +30,8 @@ cat <<EOT |  tee /etc/apache2/sites-available/ituser.lab.local.conf
 </VirtualHost>
 EOT
 
-cat <<EOT |  tee /etc/apache2/sites-available/impresoras.lab.local.conf
+# Configurar archivo de VirtualHost para impresoras.lab.local
+cat <<EOT > /etc/apache2/sites-available/impresoras.lab.local.conf
 <VirtualHost *:80>
     ServerName impresoras.lab.local
     DocumentRoot /var/www/impresoras.lab.local
@@ -37,12 +42,14 @@ cat <<EOT |  tee /etc/apache2/sites-available/impresoras.lab.local.conf
 </VirtualHost>
 EOT
 
-cat <<EOT |  tee /etc/apache2/sites-available/www.lab.local.conf
+# Configurar archivo de VirtualHost para www.lab.local
+cat <<EOT > /etc/apache2/sites-available/www.lab.local.conf
 <VirtualHost *:80>
     ServerName www.lab.local
     DocumentRoot /var/www/www.lab.local
 </VirtualHost>
 EOT
 
- a2ensite corp.lab.local.conf ituser.lab.local.conf impresoras.lab.local.conf www.lab.local.conf
- systemctl restart apache2
+# Habilitar los sitios virtuales y reiniciar Apache
+a2ensite corp.lab.local.conf ituser.lab.local.conf impresoras.lab.local.conf www.lab.local.conf
+systemctl restart apache2

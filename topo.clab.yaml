@@ -73,8 +73,9 @@ topology:
         - "apt install -y iproute2"
         - "ip addr add 192.168.20.50/24 dev e0"
         - "ip route add default via 203.0.113.1"
+        - "bash Configs/Hosts/server_web.sh"
       
-      startup-config: Configs/Hosts/host_web.txt.partial
+      #startup-config: Configs/Hosts/host_web.txt.partial
     host_sri:
       kind: linux
       image: ubuntu:latest
