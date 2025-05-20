@@ -1,8 +1,4 @@
-auto eth0
-iface eth0 inet static
-    address 192.168.20.80
-    netmask 255.255.255.0
-    gateway 192.168.10.3
+
 
 # Actualizar repositorios e instalar servicios necesarios
 sudo apt update
@@ -64,13 +60,16 @@ cat <<EOT | sudo tee /etc/bind/db.lab.local
         604800 )   ; Negative Cache TTL
 
 ; Nameservers
-@   IN  NS  ns.lab.local.
+@   IN  NS  www.lab.local.
 
 ; Wildcard redirection
-*   IN  A   192.168.20.80
+*   IN  A   192.168.20.50
 
 ; Specific records
-ns  IN  A   192.168.20.80
+www         IN  A   192.168.20.50
+impresoras  IN  A   192.168.20.50
+ituser      IN  A   192.168.20.50
+corp        IN  A   192.168.20.50
 EOT
 
 sudo systemctl restart bind9

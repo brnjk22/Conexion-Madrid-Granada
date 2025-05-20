@@ -1,0 +1,5 @@
+##Habilitar reenvío de paquetes
+echo 'net.ipv4.ip_forward=1' | sudo tee -a /etc/sysctl.conf
+
+## Configurar NAT con iptables
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE

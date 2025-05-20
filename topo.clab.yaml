@@ -59,37 +59,63 @@ topology:
     fw:
       kind: fortinet_fortigate
       image: vrnetlab/vr-fortios:fortios
-      startup-config: Configs/Firewall/fw.txt.partial
+      startup-config: Configs/Firewall/fw2.txt.partial
       ports:
-        - "8080:80"
-        - "8443:443"
+         - "8080:80"
+         - "8443:443"
 
     #Hosts
     host_web:
       kind: linux
       image: ubuntu:latest
+      exec:
+        - "ip addr add 192.168.20.50/24 dev eth0"
+        - "ip route add default via 203.0.113.1"
       network-mode: none
       startup-config: Configs/Hosts/host_web.txt.partial
     host_sri:
       kind: linux
       image: ubuntu:latest
+      exec:
+        - "ip addr add 192.168.20.80/24 dev eth0"
+        - "ip route add default via 203.0.113.1"
+
       network-mode: none
       startup-config: Configs/Hosts/host_sri.txt.partial
     host_corp:
       kind: linux
       image: ubuntu:latest
+      exec:
+        - "ip addr add 192.168.30.60/24 dev eth0"
+        - "ip route add default via 203.0.113.1"
       network-mode: none
       startup-config: Configs/Hosts/host_corp.txt.partial
     host_printer:
       kind: linux
       image: ubuntu:latest
+      exec:
+        - "ip addr add 192.168.40.10/24 dev eth0"
+        - "ip route add default via 203.0.113.1"
       network-mode: none
       startup-config: Configs/Hosts/host_printer.txt.partial
     host_it:
       kind: linux
       image: ubuntu:latest
+      exec:
+        - "ip addr add 192.168.50.10/24 dev eth0"
+        ##Conexion a internet
+        - "ip route add default via 203.0.113.1"
       network-mode: none
       startup-config: Configs/Hosts/host_it.txt.partial
+    internet:
+      kind: linux
+      image: ubuntu:latest
+      exec:
+        - "ip addr add 203.0.113.1/24 dev eth0"
+        - "ip route add default via 203.0.113.254"
+      network-mode: none
+      #startup-config: Configs/Hosts/internet.txt.partial
+
 
   links:
     # Spine a los leaf
@@ -134,3 +160,5 @@ topology:
     # L5 conectado a PRINTER (VLAN 40) y IT-USERS (VLAN 50)
     - endpoints: ["l5:e0/3", "host_printer:eth0"]
     - endpoints: ["l5:e1/0", "host_it:eth0"]
+    # R3 conectado a Internet
+    - endpoints: ["r3:e0/2", "internet:eth0"]
