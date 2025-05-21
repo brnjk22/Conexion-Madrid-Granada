@@ -1,0 +1,126 @@
+# Configuración de subinterfaces VLAN sobre port1 (conectado a L2)
+config system interface
+    edit "vlan10"
+        set vdom "root"
+        set interface "port1"
+        set vlanid 10
+        set ip 192.168.10.10 255.255.255.0
+        set allowaccess ping https ssh
+        set type vlan
+    next
+    edit "vlan20"
+        set vdom "root"
+        set interface "port1"
+        set vlanid 20
+        set ip 192.168.20.10 255.255.255.0
+        set allowaccess ping https ssh
+        set type vlan
+    next
+    edit "vlan30"
+        set vdom "root"
+        set interface "port1"
+        set vlanid 30
+        set ip 192.168.30.10 255.255.255.0
+        set allowaccess ping https ssh
+        set type vlan
+    next
+    edit "vlan40"
+        set vdom "root"
+        set interface "port1"
+        set vlanid 40
+        set ip 192.168.40.10 255.255.255.0
+        set allowaccess ping https ssh
+        set type vlan
+    next
+    edit "vlan50"
+        set vdom "root"
+        set interface "port1"
+        set vlanid 50
+        set ip 192.168.50.10 255.255.255.0
+        set allowaccess ping https ssh
+        set type vlan
+    next
+    edit "vlan60"
+        set vdom "root"
+        set interface "port1"
+        set vlanid 60
+        set ip 192.168.60.10 255.255.255.0
+        set allowaccess ping https ssh
+        set type vlan
+    next
+end
+
+config firewall policy
+    edit 1
+        set name "Mgmt VLAN 10"
+        set srcintf "vlan10"
+        set dstintf "any"
+        set srcaddr "all"
+        set dstaddr "all"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+    next
+
+    edit 2
+        set name "VLAN 20 to VLAN 30"
+        set srcintf "vlan20"
+        set dstintf "vlan30"
+        set srcaddr "all"
+        set dstaddr "all"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+    next
+
+    edit 3
+        set name "Printers to Corp Users"
+        set srcintf "vlan40"
+        set dstintf "vlan30"
+        set srcaddr "all"
+        set dstaddr "all"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+    next
+
+    edit 4
+        set name "IT to All"
+        set srcintf "vlan50"
+        set dstintf "any"
+        set srcaddr "all"
+        set dstaddr "all"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+    next
+
+    edit 5
+        set name "Block All Inter-VLAN"
+        set srcintf "any"
+        set dstintf "any"
+        set srcaddr "all"
+        set dstaddr "all"
+        set action deny
+        set schedule "always"
+        set service "ALL"
+        set logtraffic all
+    next
+
+    edit 6
+        set name "Internet Access"
+        set srcintf "any"
+        set dstintf "wan"
+        set srcaddr "all"
+        set dstaddr "all"
+        set action accept
+        set schedule "always"
+        set service "ALL"
+        set nat enable
+        set logtraffic all
+    next
+end
