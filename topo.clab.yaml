@@ -102,8 +102,10 @@ topology:
         - "ip link set dev e0 up"
         #IP POR DHCP
         - "ip route add default via 203.0.113.1"
+      binds:
+        - "Configs/Hosts/host_corp.sh:/host_corp.sh"
+      #Ejecutar el script bash host_corp.sh al iniciar el contenedor
       
-      startup-config: Configs/Hosts/host_corp.txt.partial
     host_printer:
       kind: linux
       image: ubuntu:latest
@@ -114,8 +116,10 @@ topology:
         - "ip link set dev e0 up"
         #IP POR DHCP
         - "ip route add default via 203.0.113.1"
+      binds:
+        - "Configs/Hosts/host_printer.sh:/host_printer.sh"
+      #Ejecutar el script bash host_printer.sh al iniciar el contenedor
       
-      startup-config: Configs/Hosts/host_printer.txt.partial
     host_it:
       kind: linux
       image: ubuntu:latest
@@ -127,8 +131,9 @@ topology:
         #IP POR DHCP
         ##Conexion a internet
         - "ip route add default via 203.0.113.1"
-      
-      startup-config: Configs/Hosts/host_it.txt.partial
+      binds:
+        - "Configs/Hosts/host_it.sh:/host_it.sh"
+      #Ejecutar el script bash host_it.sh al iniciar el contenedor
     internet:
       kind: linux
       image: ubuntu:latest
