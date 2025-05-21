@@ -6,6 +6,12 @@ apt update && apt install -y apache2
 # Crear directorios para los sitios virtuales
 mkdir -p /var/www/corp.lab.local /var/www/ituser.lab.local /var/www/impresoras.lab.local /var/www/www.lab.local
 
+# Crear archivos index.html personalizados para cada sitio
+echo "<h1>Bienvenido a corp.lab.local</h1>" > /var/www/corp.lab.local/index.html
+echo "<h1>Bienvenido a ituser.lab.local</h1>" > /var/www/ituser.lab.local/index.html
+echo "<h1>Bienvenido a impresoras.lab.local</h1>" > /var/www/impresoras.lab.local/index.html
+echo "<h1>Bienvenido a www.lab.local</h1>" > /var/www/www.lab.local/index.html
+
 # Configurar archivo de VirtualHost para corp.lab.local
 cat <<EOT > /etc/apache2/sites-available/corp.lab.local.conf
 <VirtualHost *:80>
