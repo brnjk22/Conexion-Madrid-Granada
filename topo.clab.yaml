@@ -100,7 +100,7 @@ topology:
         - "apt install -y iproute2"
         - "apt install -y iputils-ping"
         - "ip link set dev e0 up"
-        - "ip addr add 192.168.30.60/24 dev e0"
+        #IP POR DHCP
         - "ip route add default via 203.0.113.1"
       
       startup-config: Configs/Hosts/host_corp.txt.partial
@@ -112,7 +112,7 @@ topology:
         - "apt install -y iproute2"
         - "apt install -y iputils-ping"
         - "ip link set dev e0 up"
-        - "ip addr add 192.168.40.10/24 dev e0"
+        #IP POR DHCP
         - "ip route add default via 203.0.113.1"
       
       startup-config: Configs/Hosts/host_printer.txt.partial
@@ -124,7 +124,7 @@ topology:
         - "apt install -y iproute2"
         - "apt install -y iputils-ping"
         - "ip link set dev e0 up"
-        - "ip addr add 192.168.50.10/24 dev e0"
+        #IP POR DHCP
         ##Conexion a internet
         - "ip route add default via 203.0.113.1"
       

@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # Actualizar repositorios e instalar servicios necesarios
-apt update && apt install -y isc-dhcp-server bind9
+apt update && apt install -y isc-dhcp-server bind9 systemd dnsutils
 
 # Configuración del servidor DHCP
 cat <<EOT > /etc/dhcp/dhcpd.conf
@@ -83,6 +83,20 @@ cat <<EOT > /etc/bind/db.192.168.20
 
 @       IN  NS  ns.lab.local.
 50      IN  PTR ns.lab.local.
+EOT
+# Configurar el archivo named.conf.options para reenviar consultas DNS a servidores públicos
+cat <<EOT > /etc/bind/named.conf.options
+options {
+    directory "/var/cache/bind";
+
+    forwarders {
+        8.8.8.8;
+        1.1.1.1;
+    };
+
+    allow-query { any; };
+    recursion yes;
+};
 EOT
 
 # Reiniciar el servicio DNS

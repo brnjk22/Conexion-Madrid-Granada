@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Actualizar lista de paquetes e instalar Apache2
-apt update && apt install -y apache2
+apt update && apt install -y apache2 systemd dnsutils
 
 # Crear directorios para los sitios virtuales
 mkdir -p /var/www/corp.lab.local /var/www/ituser.lab.local /var/www/impresoras.lab.local /var/www/www.lab.local
@@ -59,3 +59,10 @@ EOT
 # Habilitar los sitios virtuales y reiniciar Apache
 a2ensite corp.lab.local.conf ituser.lab.local.conf impresoras.lab.local.conf www.lab.local.conf
 systemctl restart apache2
+
+#Usar el servidor DNS
+cat <<EOT > /etc/resolv.conf
+nameserver 192.168.20.80 # IP del servidor DNS
+nameserver 8.8.8.8
+search lab.local
+EOT
