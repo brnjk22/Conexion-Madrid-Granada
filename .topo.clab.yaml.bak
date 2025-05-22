@@ -141,10 +141,13 @@ topology:
         - "apt update"
         - "apt install -y iproute2"
         - "apt install -y iputils-ping"
+        - "apt install -y iptables"
         - "ip link set dev e0 up"
         - "ip addr add 203.0.113.1/24 dev e0"
         - "ip route add default via 203.0.113.254"
-      startup-config: Configs/Hosts/internet.txt.partial
+      binds:
+        - "Configs/Hosts/internet.sh:/internet.sh"
+      #Ejecutar el script bash internet.sh al iniciar el contenedor
 
 
   links:

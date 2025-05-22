@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # Actualizar repositorios e instalar servicios necesarios
-apt update && apt install -y isc-dhcp-server bind9 systemd dnsutils
+apt update && apt install -y isc-dhcp-server bind9 dnsutils
 
 # Configuración del servidor DHCP
 cat <<EOT > /etc/dhcp/dhcpd.conf

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Actualizar lista de paquetes e instalar Apache2
-apt update && apt install -y apache2 systemd dnsutils
+apt update && apt install -y apache2 dnsutils
 
 # Crear directorios para los sitios virtuales
 mkdir -p /var/www/corp.lab.local /var/www/ituser.lab.local /var/www/impresoras.lab.local /var/www/www.lab.local
