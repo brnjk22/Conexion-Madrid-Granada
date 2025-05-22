@@ -1,56 +1,141 @@
-##Asignacion del nombre del dispositivo
-#hostname Spine2
-
-# ##Creacion de las VLANs y VTP
-# vtp domain VTP-LaLiga
-# vtp mode server
-# vtp password LaLiga
-
-# vlan 10
-#  name "Gestion"
-# vlan 20
-#  name "Servers"
-# vlan 30
-#  name "Corp_Users"
-# vlan 40
-#  name "Impresoras"
-# vlan 50
-#  name "IT-Users"
-# vlan 60
-#  name "MGMT"
-
-# ##Asignacion de las interfaces a las VLANs
-# ##Conexion a L1
-# interface e0/1
-#  switchport trunk encapsulation dot1q
-#  switchport mode trunk
-#  switchport trunk allowed vlan 10,20,30,40,50,60
-#  no shutdown
- 
-# ##Conexion a L2
-# interface e0/2
-#  switchport trunk encapsulation dot1q
-#  switchport mode trunk
-#  switchport trunk allowed vlan 10,20,30,40,50,60
-#  no shutdown
-
-# ##Conexion a L3
-# interface e0/3
-#  switchport trunk encapsulation dot1q
-#  switchport mode trunk
-#  switchport trunk allowed vlan 10,20,30,40,50,60
-#  no shutdown
-
-# ##Conexion a L4
-# interface e1/0
-#  switchport trunk encapsulation dot1q
-#  switchport mode trunk
-#  switchport trunk allowed vlan 10,20,30,40,50,60
-#  no shutdown
-
-# ##Conexion a L5
-# interface e1/1
-#  switchport trunk encapsulation dot1q
-#  switchport mode trunk
-#  switchport trunk allowed vlan 10,20,30,40,50,60
-#  no shutdown
+hostname S2
+!
+no ip domain-lookup
+ip routing
+!
+interface Ethernet0/1
+ no shutdown
+!
+interface e0/1.10
+ encapsulation dot1Q 10
+ no shutdown
+!
+interface e0/1.20
+ encapsulation dot1Q 20
+ no shutdown
+!
+interface e0/1.30
+ encapsulation dot1Q 30
+ no shutdown
+!
+interface e0/1.40
+ encapsulation dot1Q 40
+ no shutdown
+!
+interface e0/1.50
+ encapsulation dot1Q 50
+ no shutdown
+!
+interface e0/1.60
+ encapsulation dot1Q 60
+ no shutdown
+!
+interface Ethernet0/2
+ no shutdown
+!
+interface e0/2.10
+ encapsulation dot1Q 10
+ no shutdown
+!
+interface e0/2.20
+ encapsulation dot1Q 20
+ no shutdown
+!
+interface e0/2.30
+ encapsulation dot1Q 30
+ no shutdown
+!
+interface e0/2.40
+ encapsulation dot1Q 40
+ no shutdown
+!
+interface e0/2.50
+ encapsulation dot1Q 50
+ no shutdown
+!
+interface e0/2.60
+ encapsulation dot1Q 60
+ no shutdown
+!
+interface Ethernet0/3
+ no shutdown
+!
+interface e0/3.10
+ encapsulation dot1Q 10
+ no shutdown
+!
+interface e0/3.20
+ encapsulation dot1Q 20
+ no shutdown
+!
+interface e0/3.30
+ encapsulation dot1Q 30
+ no shutdown
+!
+interface e0/3.40
+ encapsulation dot1Q 40
+ no shutdown
+!
+interface e0/3.50
+ encapsulation dot1Q 50
+ no shutdown
+!
+interface e0/3.60
+ encapsulation dot1Q 60
+ no shutdown
+!
+interface Ethernet1/0
+ no shutdown
+!
+interface e1/0.10
+ encapsulation dot1Q 10
+ no shutdown
+!
+interface e1/0.20
+ encapsulation dot1Q 20
+ no shutdown
+!
+interface e1/0.30
+ encapsulation dot1Q 30
+ no shutdown
+!
+interface e1/0.40
+ encapsulation dot1Q 40
+ no shutdown
+!
+interface e1/0.50
+ encapsulation dot1Q 50
+ no shutdown
+!
+interface e1/0.60
+ encapsulation dot1Q 60
+ no shutdown
+!
+interface Ethernet1/1
+ no shutdown
+!
+interface e1/1.10
+ encapsulation dot1Q 10
+ no shutdown
+!
+interface e1/1.20
+ encapsulation dot1Q 20
+ no shutdown
+!
+interface e1/1.30
+ encapsulation dot1Q 30
+ no shutdown
+!
+interface e1/1.40
+ encapsulation dot1Q 40
+ no shutdown
+!
+interface e1/1.50
+ encapsulation dot1Q 50
+ no shutdown
+!
+interface e1/1.60
+ encapsulation dot1Q 60
+ no shutdown
+!
+end
