@@ -1,0 +1,20 @@
+hostname R3
+!
+interface e0/1
+ description Conexión al Firewall (FW)
+ ip address 192.168.10.3 255.255.255.252
+ ip nat inside
+ no shutdown
+!
+interface e0/0
+ description Conexión a Internet
+ ip address 203.0.113.2 255.255.255.0
+ ip nat outside
+ no shutdown
+!
+ip routing
+
+ip nat inside source list 1 interface e0/0 overload
+access-list 1 permit 192.168.0.0 0.0.255.255
+
+ip route 0.0.0.0 0.0.0.0 203.0.113.1

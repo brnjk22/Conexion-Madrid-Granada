@@ -1,16 +1,18 @@
 name: laliga-leafspine
-
+mgmt:
+  network: eth0
+  ipv4-subnet: 20.0.0.0/24
 topology:
   nodes:
     # Spine Switches
     s1:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      #startup-config: Configs/Switches/Spine1.txt.partial
+      startup-config: Configs/Switches/Spine1.txt.partial
     s2:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      #startup-config: Configs/Switches/Spine2.txt.partial
+      startup-config: Configs/Switches/Spine2.txt.partial
 
     # Leaf Switches
     l1:
@@ -43,42 +45,110 @@ topology:
     r1:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      #startup-config: configs/r1.txt.partial
+      startup-config: Configs/Routers/R1.txt.partial
     r2:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      #startup-config: configs/r2.txt.partial
+      startup-config: Configs/Routers/R2.txt.partial
     r3:
       kind: cisco_iol
       image: vrnetlab/cisco_iol:1.0.0
-      #startup-config: configs/r3.txt.partial
+      startup-config: Configs/Routers/R3.txt.partial
 
     # Firewall (Linux o personalizado)
     fw:
       kind: fortinet_fortigate
       image: vrnetlab/vr-fortios:fortios
+      startup-config: Configs/Firewall/fw2.txt.partial
+      ports:
+         - "8080:80"
+         - "8443:443"
 
     #Hosts
     host_web:
       kind: linux
-      image: alpine:latest
-      network-mode: none
+      image: ubuntu:latest
+      exec: 
+        - "apt update"
+        - "apt install -y iproute2"
+        - "apt install -y iputils-ping"
+        - "ip link set dev e0 up"
+        - "ip addr add 192.168.20.50/24 dev e0"
+        - "ip route add default via 203.0.113.1"
+      binds:
+        - "Configs/Hosts/server_web.sh:/server_web.sh"
+      #Ejecutar el script bash server_web.sh al iniciar el contenedor
+      
     host_sri:
       kind: linux
-      image: alpine:latest
-      network-mode: none
+      image: ubuntu:latest
+      exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "apt install -y iputils-ping"
+        - "ip link set dev e0 up"
+        - "ip addr add 192.168.20.80/24 dev e0"
+        - "ip route add default via 203.0.113.1"
+      binds:
+        - "Configs/Hosts/server_sri.sh:/server_sri.sh"
+      #Ejecutar el script bash server_sri.sh al iniciar el contenedor
     host_corp:
       kind: linux
-      image: alpine:latest
-      network-mode: none
+      image: ubuntu:latest
+      exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "apt install -y iputils-ping"
+        - "ip link set dev e0 up"
+        #IP POR DHCP
+        - "ip route add default via 203.0.113.1"
+      binds:
+        - "Configs/Hosts/host_corp.sh:/host_corp.sh"
+      #Ejecutar el script bash host_corp.sh al iniciar el contenedor
+      
     host_printer:
       kind: linux
-      image: alpine:latest
-      network-mode: none
+      image: ubuntu:latest
+      exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "apt install -y iputils-ping"
+        - "ip link set dev e0 up"
+        #IP POR DHCP
+        - "ip route add default via 203.0.113.1"
+      binds:
+        - "Configs/Hosts/host_printer.sh:/host_printer.sh"
+      #Ejecutar el script bash host_printer.sh al iniciar el contenedor
+      
     host_it:
       kind: linux
-      image: alpine:latest
-      network-mode: none
+      image: ubuntu:latest
+      exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "apt install -y iputils-ping"
+        - "ip link set dev e0 up"
+        #IP POR DHCP
+        ##Conexion a internet
+        - "ip route add default via 203.0.113.1"
+      binds:
+        - "Configs/Hosts/host_it.sh:/host_it.sh"
+      #Ejecutar el script bash host_it.sh al iniciar el contenedor
+    internet:
+      kind: linux
+      image: ubuntu:latest
+      exec:
+        - "apt update"
+        - "apt install -y iproute2"
+        - "apt install -y iputils-ping"
+        - "apt install -y iptables"
+        - "ip link set dev e0 up"
+        - "ip addr add 203.0.113.1/24 dev e0"
+        - "ip route add default via 203.0.113.254"
+      binds:
+        - "Configs/Hosts/internet.sh:/internet.sh"
+      #Ejecutar el script bash internet.sh al iniciar el contenedor
+
 
   links:
     # Spine a los leaf
@@ -112,14 +182,16 @@ topology:
     - endpoints: ["fw:eth3", "l1:e1/1"]
 
     # L3 conectado a WEB y SRI (VLAN 20)
-    - endpoints: ["l3:e0/3", "host_web:eth0"]
-    - endpoints: ["l3:e1/0", "host_sri:eth0"]
+    - endpoints: ["l3:e0/3", "host_web:e0"]
+    - endpoints: ["l3:e1/0", "host_sri:e0"]
 
     # L4 conectado a CORP (VLAN 30)
-    - endpoints: ["l4:e0/3", "host_corp:eth0"]
+    - endpoints: ["l4:e0/3", "host_corp:e0"]
     # L4 conectado a PRINTER (VLAN 40)
-    - endpoints: ["l4:e1/0", "host_printer:eth1"]
+    - endpoints: ["l4:e1/0", "host_printer:e1"]
 
     # L5 conectado a PRINTER (VLAN 40) y IT-USERS (VLAN 50)
-    - endpoints: ["l5:e0/3", "host_printer:eth0"]
-    - endpoints: ["l5:e1/0", "host_it:eth0"]
+    - endpoints: ["l5:e0/3", "host_printer:e0"]
+    - endpoints: ["l5:e1/0", "host_it:e0"]
+    # R3 conectado a Internet
+    - endpoints: ["r3:e0/2", "internet:e0"]

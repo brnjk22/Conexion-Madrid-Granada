@@ -2,22 +2,22 @@
 hostname L2
 !
 ##Creacion de las VLANs y VTP
-vtp domain VTP-LaLiga
-vtp mode client
-vtp password LaLiga
+#vtp domain VTP-LaLiga
+#vtp mode client
+#vtp password LaLiga
 !
 vlan 10
- name "Gestion"
+ name Gestion
 vlan 20
- name "Servers"
+ name Servers
 vlan 30
- name "Corp_Users"
+ name Corp_Users
 vlan 40
- name "Impresoras"
+ name Impresoras
 vlan 50
- name "IT-Users"
+ name IT-Users
 vlan 60
- name "MGMT"
+ name MGMT
 !
 ##Asignacion de las interfaces a las VLANs
 ##Conexion a Spine1
@@ -33,6 +33,24 @@ interface e0/2
  switchport mode trunk
  switchport trunk allowed vlan 10,20,30,40,50,60
  no shutdown
+!
+##Conexion al Firewall
+interface e1/1
+ switchport trunk encapsulation dot1Q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,50,60
+!
+##Conexion a R1
+interface e0/3
+ switchport trunk encapsulation dot1Q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,50,60
+!
+##Conexion a R2
+interface e1/0
+ switchport trunk encapsulation dot1Q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40,50,60
 !
 ##Asignacion de la interfaz de gestion (vlan 10)
 interface vlan 10

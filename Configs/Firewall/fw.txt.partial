@@ -1,0 +1,131 @@
+#Configuracion de la ip seegun la vlan
+#Interfaz conectada a L2
+
+interface eth1.10
+    vlan-id 10
+    ip address 192.168.10.10/24
+
+interface eth1.20
+    vlan-id 20
+    ip address 192.168.20.10/24
+
+interface eth1.30
+    vlan-id 30
+    ip address 192.168.30.10/24
+
+interface eth1.40
+    vlan-id 40
+    ip address 192.168.40.10/24
+
+interface eth1.50
+    vlan-id 50
+    ip address 192.168.50.10/24
+
+interface eth1.60
+    vlan-id 60
+    ip address 192.168.60.10/24
+
+#Interfaz conectada a L1
+
+interface eth3.10
+    vlan-id 10
+    ip address 192.168.10.10/24
+
+interface eth3.20
+    vlan-id 20
+    ip address 192.168.20.10/24
+
+interface eth3.30
+    vlan-id 30
+    ip address 192.168.30.10/24
+
+interface eth3.40
+    vlan-id 40
+    ip address 192.168.40.10/24
+
+interface eth3.50
+    vlan-id 50
+    ip address 192.168.50.10/24
+
+interface eth3.60
+    vlan-id 60
+    ip address 192.168.60.10/24
+
+
+
+# Configuración de políticas de firewall para las VLANs
+
+# Permitir tráfico de gestión (VLAN 10) hacia todos los dispositivos
+config firewall policy
+    edit 1
+    set srcintf "vlan10"
+    set dstintf "any"
+    set srcaddr "all"
+    set dstaddr "all"
+    set action accept
+    set schedule "always"
+    set service "ALL"
+    set logtraffic all
+next
+
+# Permitir tráfico entre servidores (VLAN 20) y usuarios corporativos (VLAN 30)
+edit 2
+    set srcintf "vlan20"
+    set dstintf "vlan30"
+    set srcaddr "all"
+    set dstaddr "all"
+    set action accept
+    set schedule "always"
+    set service "ALL"
+    set logtraffic all
+next
+
+# Permitir tráfico de impresoras (VLAN 40) hacia usuarios corporativos (VLAN 30)
+edit 3
+    set srcintf "vlan40"
+    set dstintf "vlan30"
+    set srcaddr "all"
+    set dstaddr "all"
+    set action accept
+    set schedule "always"
+    set service "ALL"
+    set logtraffic all
+next
+
+# Permitir tráfico de usuarios IT (VLAN 50) hacia todos los dispositivos
+edit 4
+    set srcintf "vlan50"
+    set dstintf "any"
+    set srcaddr "all"
+    set dstaddr "all"
+    set action accept
+    set schedule "always"
+    set service "ALL"
+    set logtraffic all
+next
+
+# Bloquear cualquier otro tráfico entre VLANs
+edit 5
+    set srcintf "any"
+    set dstintf "any"
+    set srcaddr "all"
+    set dstaddr "all"
+    set action deny
+    set schedule "always"
+    set service "ALL"
+    set logtraffic all
+next
+
+edit 6
+    set srcintf "any"
+    set dstintf "wan"
+    set srcaddr "all"
+    set dstaddr "all"
+    set action accept
+    set nat enable
+    set schedule "always"
+    set service "ALL"
+    set logtraffic all
+next
+
+end
